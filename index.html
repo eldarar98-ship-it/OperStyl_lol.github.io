@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Игровой портал | Level Up</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0e1a;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+      color: #e9f1f7;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 255, 200, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 200, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0 1.5rem 0;
+      border-bottom: 1px solid rgba(0, 255, 200, 0.2);
+      margin-bottom: 2.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo i {
+      font-size: 2.3rem;
+      color: #00f5d4;
+      filter: drop-shadow(0 0 8px #00f5d480);
+    }
+
+    .logo h1 {
+      font-weight: 700;
+      font-size: 1.9rem;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #b3ffe0, #00d4b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-weight: 500;
+    }
+
+    .nav-links a {
+      color: #b0c7d9;
+      text-decoration: none;
+      transition: 0.25s ease;
+      font-size: 1.1rem;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a:hover {
+      color: #00f5d4;
+      border-bottom-color: #00f5d4;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .user-profile i {
+      font-size: 1.7rem;
+      color: #b0c7d9;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .user-profile i:hover {
+      color: #00f5d4;
+      transform: scale(1.05);
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #1f2a3f, #0e1628);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #00f5d4;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #00f5d4;
+      box-shadow: 0 0 15px #00f5d430;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #111b2e, #0b111f);
+      padding: 2.5rem 2rem;
+      border-radius: 40px;
+      margin-bottom: 3.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #1e3347;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(2px);
+    }
+
+    .hero-text {
+      flex: 2 1 300px;
+    }
+
+    .hero-text .badge {
+      background: #00d4b0;
+      color: #0b0e1a;
+      font-weight: 700;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .hero-text h2 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-text h2 span {
+      background: linear-gradient(120deg, #b3ffe0, #00c9a7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-text p {
+      color: #b0c7d9;
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin-bottom: 1.8rem;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      background: transparent;
+      border: 1px solid #2a4058;
+      color: #e9f1f7;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #00f5d4;
+      border: 1px solid #00f5d4;
+      color: #0b0e1a;
+      box-shadow: 0 0 20px #00f5d450;
+    }
+
+    .btn-primary:hover {
+      background: #00d4b0;
+      border-color: #00d4b0;
+      transform: scale(1.02);
+      box-shadow: 0 0 30px #00f5d480;
+    }
+
+    .btn-outline:hover {
+      border-color: #00f5d4;
+      background: rgba(0, 245, 212, 0.08);
+      color: #00f5d4;
+    }
+
+    .hero-stats {
+      flex: 1 1 200px;
+      display: flex;
+      gap: 1.8rem;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+      background: rgba(0, 245, 212, 0.03);
+      padding: 0.8rem 1.2rem;
+      border-radius: 30px;
+      border: 1px solid #1f3347;
+      min-width: 90px;
+    }
+
+    .stat-item .number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #00f5d4;
+    }
+
+    .stat-item .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #7e96b0;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .section-title h3 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+
+    .section-title a {
+      color: #00f5d4;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dashed #00f5d480;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .game-card {
+      background: #111b2e;
+      border-radius: 30px;
+      padding: 1.5rem 1rem 1.2rem;
+      text-align: center;
+      border: 1px solid #1a2a3e;
+      transition: 0.3s ease;
+      backdrop-filter: blur(2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      cursor: default;
+    }
+
+    .game-card:hover {
+      transform: translateY(-10px);
+      border-color: #00f5d4;
+      box-shadow: 0 18px 40px rgba(0, 245, 212, 0.15);
+      background: #132035;
+    }
+
+    .game-icon {
+      font-size: 3.4rem;
+      color: #00d4b0;
+      margin-bottom: 0.6rem;
+      filter: drop-shadow(0 0 8px #00f5d440);
+    }
+
+    .game-card h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .game-card .genre {
+      font-size: 0.75rem;
+      color: #7e96b0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #1a2a3e;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      display: inline-block;
+      margin: 0.5rem 0 0.8rem;
+    }
+
+    .game-card .rating {
+      color: #f5c542;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+    }
+
+    .game-card .rating i {
+      margin: 0 1px;
+    }
+
+    .leaderboard {
+      background: linear-gradient(145deg, #101a2b, #0a111f);
+      border-radius: 40px;
+      padding: 2rem 2rem;
+      border: 1px solid #1e3347;
+      margin-bottom: 2.5rem;
+    }
+
+    .leaderboard-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .leaderboard-header h3 {
+      font-size: 1.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .leaderboard-header h3 i {
+      color: #f5c542;
+    }
+
+    .leader-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .leader-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 245, 212, 0.03);
+      padding: 0.7rem 1.5rem;
+      border-radius: 60px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+    }
+
+    .leader-row:hover {
+      border-color: #00f5d430;
+      background: rgba(0, 245, 212, 0.06);
+    }
+
+    .leader-row .pos {
+      font-weight: 700;
+      color: #7e96b0;
+      width: 2.2rem;
+    }
+
+    .leader-row .name {
+      flex: 2;
+      font-weight: 500;
+      margin-left: 0.5rem;
+    }
+
+    .leader-row .score {
+      background: #1a2a3e;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #00f5d4;
+      font-size: 0.9rem;
+    }
+
+    .leader-row .medal {
+      color: #f5c542;
+      width: 1.8rem;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #131f33;
+      border: 1px solid #00f5d450;
+      border-radius: 50px;
+      max-width: 600px;
+      width: 90%;
+      padding: 2rem 2rem 2.5rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+      position: relative;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.8rem;
+      font-size: 2rem;
+      color: #7e96b0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #00f5d4;
+      transform: rotate(90deg);
+    }
+
+    .modal h2 {
+      font-size: 2rem;
+      margin-bottom: 1.8rem;
+      text-align: center;
+    }
+
+    .modal h2 i {
+      color: #00f5d4;
+      margin-right: 0.6rem;
+    }
+
+    .game-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .game-option {
+      background: #0b1628;
+      border: 1px solid #1f3347;
+      border-radius: 30px;
+      padding: 1rem 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .game-option:hover {
+      border-color: #00f5d4;
+      background: #111f36;
+      transform: scale(1.01);
+    }
+
+    .game-option i {
+      font-size: 2.4rem;
+      color: #00d4b0;
+      width: 3rem;
+      text-align: center;
+    }
+
+    .game-option .info {
+      flex: 1;
+    }
+
+    .game-option .info h4 {
+      font-size: 1.2rem;
+    }
+
+    .game-option .info p {
+      color: #7e96b0;
+      font-size: 0.85rem;
+    }
+
+    .game-option .play-btn {
+      background: #00f5d4;
+      border: none;
+      color: #0b0e1a;
+      padding: 0.4rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .game-option .play-btn:hover {
+      background: #00c9a7;
+    }
+
+    .game-container {
+      margin-top: 1.5rem;
+      background: #0b1628;
+      border-radius: 30px;
+      padding: 1.5rem;
+      border: 1px solid #1f3347;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game-container.active {
+      display: flex;
+    }
+
+    .game-container .game-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .game-container .game-area {
+      width: 100%;
+      text-align: center;
+    }
+
+    .game-area input, .game-area button {
+      padding: 0.5rem 1rem;
+      border-radius: 60px;
+      border: none;
+      font-size: 1rem;
+      margin: 0.3rem;
+    }
+
+    .game-area input {
+      background: #1a2a3e;
+      color: #e9f1f7;
+      width: 120px;
+      text-align: center;
+    }
+
+    .game-area button {
+      background: #00f5d4;
+      color: #0b0e1a;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .game-area button:hover {
+      background: #00c9a7;
+    }
+
+    .game-area .message {
+      margin: 0.8rem 0;
+      font-weight: 500;
+      min-height: 2.5rem;
+    }
+
+    .game-area .counter {
+      color: #7e96b0;
+      font-size: 0.9rem;
+    }
+
+    .back-btn {
+      background: transparent;
+      border: 1px solid #2a4058;
+      color: #b0c7d9;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      margin-top: 0.8rem;
+      transition: 0.2s;
+    }
+
+    .back-btn:hover {
+      border-color: #00f5d4;
+      color: #00f5d4;
+    }
+
+    footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1a2a3e;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      color: #6a7f98;
+      font-size: 0.9rem;
+    }
+
+    .socials i {
+      font-size: 1.4rem;
+      margin-left: 1rem;
+      color: #4a607a;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .socials i:hover {
+      color: #00f5d4;
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 760px) {
+      .wrapper { padding: 1rem; }
+      header { flex-direction: column; align-items: start; gap: 0.8rem; }
+      .nav-links { gap: 1.2rem; flex-wrap: wrap; }
+      .user-profile { margin-top: 0.3rem; align-self: flex-start; }
+      .hero { flex-direction: column; align-items: start; gap: 1.5rem; }
+      .hero-stats { width: 100%; justify-content: space-around; }
+      .hero-text h2 { font-size: 2.2rem; }
+      .stat-item .number { font-size: 1.8rem; }
+      .leader-row { flex-wrap: wrap; gap: 0.3rem; }
+    }
+
+    @media (max-width: 480px) {
+      .game-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .btn-group .btn { padding: 0.6rem 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="logo">
+      <i class="fas fa-gamepad"></i>
+      <h1>LevelUp</h1>
+    </div>
+    <div class="nav-links">
+      <a href="#">Игры</a>
+      <a href="#">Турниры</a>
+      <a href="#">Рейтинг</a>
+      <a href="#">Магазин</a>
+    </div>
+    <div class="user-profile">
+      <i class="fas fa-search"></i>
+      <i class="fas fa-bell"></i>
+      <div class="avatar">A</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <span class="badge"><i class="fas fa-fire" style="margin-right: 6px;"></i> НОВЫЙ СЕЗОН</span>
+      <h2>Погрузись в <span>киберспорт</span></h2>
+      <p>Соревнуйся, побеждай и поднимайся в топ. Еженедельные турниры с призовым фондом.</p>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="openGamesBtn"><i class="fas fa-play"></i> Играть сейчас</button>
+        <a href="#" class="btn btn-outline"><i class="fas fa-trophy"></i> Рейтинг</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="number">24</div>
+        <div class="label">Игроки онлайн</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">7</div>
+        <div class="label">Турниров</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">128</div>
+        <div class="label">Всего игр</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-title">
+    <h3><i class="fas fa-rocket" style="color: #00f5d4; margin-right: 12px;"></i>Популярные игры</h3>
+    <a href="#">Смотреть все <i class="fas fa-arrow-right"></i></a>
+  </div>
+
+  <div class="game-grid">
+    <div class="game-card">
+      <div class="game-icon"><i class="fas fa-chess-queen"></i></div>
+      <h4>Королевская битва</h4>
+      <div class="genre">Battle Royale</div>
+      <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+    </div>
+    <div class="game-card">
+      <div class="game-icon"><i class="fas fa-robot"></i></div>
+      <h4>Кибер-арена</h4>
+      <div class="genre">MOBA</div>
+      <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+    </div>
+    <div class="game-card">
+      <div class="game-icon"><i class="fas fa-car"></i></div>
+      <h4>Форсаж: Дрифт</h4>
+      <div class="genre">Racing</div>
+      <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+    </div>
+    <div class="game-card">
+      <div class="game-icon"><i class="fas fa-dragon"></i></div>
+      <h4>Эпоха драконов</h4>
+      <div class="genre">RPG</div>
+      <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+    </div>
+    <div class="game-card">
+      <div class="game-icon"><i class="fas fa-skull"></i></div>
+      <h4>Тёмный рейд</h4>
+      <div class="genre">Shooter</div>
+      <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+    </div>
+  </div>
+
+  <div class="leaderboard">
+    <div class="leaderboard-header">
+      <h3><i class="fas fa-crown"></i> Топ игроков</h3>
+      <span style="color: #7e96b0; font-size: 0.9rem;"><i class="fas fa-sync-alt" style="margin-right: 6px;"></i>Обновлено сегодня</span>
+    </div>
+    <div class="leader-list">
+      <div class="leader-row"><span class="pos">#1</span><span class="medal"><i class="fas fa-trophy"></i></span><span class="name"><i class="fas fa-user-circle" style="margin-right: 8px; color: #00f5d4;"></i>ShadowStrike</span><span class="score">2 450</span></div>
+      <div class="leader-row"><span class="pos">#2</span><span class="medal" style="color: #b0b8c0;">—</span><span class="name"><i class="fas fa-user-circle" style="margin-right: 8px; color: #8a9bb5;"></i>Nova_Reaper</span><span class="score">2 120</span></div>
+      <div class="leader-row"><span class="pos">#3</span><span class="medal" style="color: #b0b8c0;">—</span><span class="name"><i class="fas fa-user-circle" style="margin-right: 8px; color: #8a9bb5;"></i>VortexR</span><span class="score">1 980</span></div>
+      <div class="leader-row"><span class="pos">#4</span><span class="medal" style="color: #b0b8c0;">—</span><span class="name"><i class="fas fa-user-circle" style="margin-right: 8px; color: #8a9bb5;"></i>LunarFox</span><span class="score">1 740</span></div>
+      <div class="leader-row"><span class="pos">#5</span><span class="medal" style="color: #b0b8c0;">—</span><span class="name"><i class="fas fa-user-circle" style="margin-right: 8px; color: #8a9bb5;"></i>FrostByte</span><span class="score">1 510</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 LevelUp. Все права защищены.</span>
+    <div class="socials">
+      <i class="fab fa-discord"></i>
+      <i class="fab fa-twitch"></i>
+      <i class="fab fa-youtube"></i>
+      <i class="fab fa-steam"></i>
+    </div>
+  </footer>
+</div>
+<!-- ===== МОДАЛЬНОЕ ОКНО С ИГРАМИ ===== -->
+<div class="modal-overlay" id="gameModal">
+  <div class="modal">
+    <button class="modal-close" id="closeModalBtn">&times;</button>
+    <h2><i class="fas fa-gamepad"></i> Выбери игру</h2>
+
+    <div class="game-selector" id="gameSelector">
+      <div class="game-option" data-game="guess">
+        <i class="fas fa-brain"></i>
+        <div class="info">
+          <h4>Угадай число</h4>
+          <p>Компьютер загадает число от 1 до 100</p>
+        </div>
+        <button class="play-btn" data-game="guess">Играть</button>
+      </div>
+      <div class="game-option" data-game="clicker">
+        <i class="fas fa-mouse-pointer"></i>
+        <div class="info">
+          <h4>Кликер</h4>
+          <p>Нажимай на кнопку быстрее всех!</p>
+        </div>
+        <button class="play-btn" data-game="clicker">Играть</button>
+      </div>
+    </div>
+
+    <div class="game-container" id="guessGame">
+      <div class="game-title"><i class="fas fa-brain"></i> Угадай число</div>
+      <div class="game-area">
+        <p class="message" id="guessMessage">Я загадал число от 1 до 100</p>
+        <input type="number" id="guessInput" min="1" max="100" placeholder="Ваше число">
+        <button id="guessBtn">Проверить</button>
+        <div class="counter">Попыток: <span id="attempts">0</span></div>
+        <button class="back-btn" id="backFromGuess">← Назад к выбору</button>
+      </div>
+    </div>
+
+    <div class="game-container" id="clickerGame">
+      <div class="game-title"><i class="fas fa-mouse-pointer"></i> Кликер</div>
+      <div class="game-area">
+        <p class="message" id="clickerMessage">Нажми на кнопку!</p>
+        <div style="font-size: 3rem; font-weight: 700; color: #00f5d4;" id="clickCounter">0</div>
+        <button id="clickBtn" style="padding: 0.8rem 2.5rem; font-size: 1.2rem;">КЛИК</button>
+        <button class="back-btn" id="backFromClicker">← Назад к выбору</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const modal = document.getElementById('gameModal');
+    const openBtn = document.getElementById('openGamesBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const gameSelector = document.getElementById('gameSelector');
+    const guessGame = document.getElementById('guessGame');
+    const clickerGame = document.getElementById('clickerGame');
+    const backGuess = document.getElementById('backFromGuess');
+    const backClicker = document.getElementById('backFromClicker');
+
+    function openModal() {
+      modal.classList.add('active');
+      gameSelector.style.display = 'flex';
+      guessGame.classList.remove('active');
+      clickerGame.classList.remove('active');
+      resetGuessGame();
+      resetClickerGame();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) closeModal();
+    });
+
+    function showGame(gameId) {
+      gameSelector.style.display = 'none';
+      if (gameId === 'guess') {
+        guessGame.classList.add('active');
+        clickerGame.classList.remove('active');
+        resetGuessGame();
+      } else if (gameId === 'clicker') {
+        clickerGame.classList.add('active');
+        guessGame.classList.remove('active');
+        resetClickerGame();
+      }
+    }
+
+    document.querySelectorAll('.play-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const game = this.getAttribute('data-game');
+        showGame(game);
+      });
+    });
+
+    backGuess.addEventListener('click', function() {
+      gameSelector.style.display = 'flex';
+      guessGame.classList.remove('active');
+      resetGuessGame();
+    });
+    backClicker.addEventListener('click', function() {
+      gameSelector.style.display = 'flex';
+      clickerGame.classList.remove('active');
+      resetClickerGame();
+    });
+
+    document.querySelectorAll('.game-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        if (e.target.classList.contains('play-btn')) return;
+        const game = this.getAttribute('data-game');
+        showGame(game);
+      });
+    });
+
+    // --- ИГРА "УГАДАЙ ЧИСЛО" ---
+    let secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    const guessInput = document.getElementById('guessInput');
+    const guessBtn = document.getElementById('guessBtn');
+    const guessMessage = document.getElementById('guessMessage');
+    const attemptsSpan = document.getElementById('attempts');
+
+    function resetGuessGame() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      attemptsSpan.textContent = '0';
+      guessMessage.textContent = 'Я загадал число от 1 до 100';
+      guessInput.value = '';
+      guessInput.disabled = false;
+      guessBtn.disabled = false;
+    }
+
+    guessBtn.addEventListener('click', function() {
+      const val = parseInt(guessInput.value);
+      if (isNaN(val) || val < 1 || val > 100) {
+        guessMessage.textContent = '⚠️ Введите число от 1 до 100';
+        return;
+      }
+      attempts++;
+      attemptsSpan.textContent = attempts;
+      if (val === secretNumber) {
+        guessMessage.textContent = `🎉 Поздравляю! Ты угадал за ${attempts} попыток! 🎉`;
+        guessInput.disabled = true;
+        guessBtn.disabled = true;
+        setTimeout(() => {
+          resetGuessGame();
+        }, 3000);
+      } else if (val < secretNumber) {
+        guessMessage.textContent = '📈 Загаданное число БОЛЬШЕ';
+      } else {
+        guessMessage.textContent = '📉 Загаданное число МЕНЬШЕ';
+      }
+      guessInput.value = '';
+    });
+
+    guessInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') guessBtn.click();
+    });
+
+    // --- ИГРА "КЛИКЕР" ---
+    let clickCount = 0;
+    const clickCounter = document.getElementById('clickCounter');
+    const clickBtn = document.getElementById('clickBtn');
+    const clickerMessage = document.getElementById('clickerMessage');
+
+    function resetClickerGame() {
+      clickCount = 0;
+      clickCounter.textContent = '0';
+      clickerMessage.textContent = 'Нажми на кнопку!';
+      clickBtn.disabled = false;
+    }
+
+    clickBtn.addEventListener('click', function() {
+      clickCount++;
+      clickCounter.textContent = clickCount;
+      if (clickCount === 1) clickerMessage.textContent = '🔥 Отлично! Продолжай!';
+      else if (clickCount === 5) clickerMessage.textContent = '⚡ Ты разогнался!';
+      else if (clickCount === 10) clickerMessage.textContent = '🚀 10 кликов! Ты машина!';
+      else if (clickCount === 20) {
+        clickerMessage.textContent = '🏆 20 кликов! Рекорд! Начни заново?';
+        clickBtn.disabled = true;
+        setTimeout(() => {
+          resetClickerGame();
+        }, 2500);
+      } else {
+        clickerMessage.textContent = `👆 ${clickCount} кликов`;
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+
+  })();
+</script>
+</body>
+  </html>
